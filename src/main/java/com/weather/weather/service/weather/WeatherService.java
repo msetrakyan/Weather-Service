@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface WeatherService {
 
-    WeatherInfo localWeather(HttpServletRequest httpServletRequest) throws JsonProcessingException;
+    WeatherInfo localWeather(HttpServletRequest httpServletRequest, String measurement) throws JsonProcessingException;
 
-    WeatherInfo getWeatherInfo(String city) throws JsonProcessingException;
+    WeatherInfo getWeatherInfo(String city, String measurement) throws JsonProcessingException;
 
-    List<WeatherForecast> getWeatherForecast(String  city) throws JsonProcessingException;
+    List<WeatherForecast> getWeatherForecast(String  city, String measurement) throws JsonProcessingException;
 
-    List<WeatherForecast> getLocalWeatherForecast(HttpServletRequest httpServletRequest) throws JsonProcessingException;
+    List<WeatherForecast> getLocalWeatherForecast(HttpServletRequest httpServletRequest, String measurement) throws JsonProcessingException;
 
 
 
