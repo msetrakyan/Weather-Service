@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto create(UserCreateRequest userCreateRequest, HttpServletRequest httpServletRequest)  {
-        if(userRepository.findByUsername(userCreateRequest.getUsername()) != null) {
+        if(userRepository.findByUsername(userCreateRequest.getUsername()).isPresent()) {
             throw new DuplicationException(String.format("User by username: %s already exists", userCreateRequest.getUsername()));
         }
         UserEntity userEntity = userMapper.toEntity(userCreateRequest);
@@ -68,33 +69,21 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserDto findByUsername(String username) {
-
-        UserEntity userEntity = userRepository.findByUsername(username);
-
-        if(userEntity == null) {
-            throw new ResourceNotFoundException(String.format("User by username: %s does not exist", username));
-        }
-
-        return userMapper.toDto(userEntity);
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException(String.format("User by username: %s does not exist", username)));
+        return userMapper.toDto(user);
     }
 
     @Transactional(readOnly = true)
     @Override
     public UserDto findByEmail(String email) {
-
-        UserEntity userEntity = userRepository.findByEmail(email);
-
-        if(userEntity == null) {
-            throw new ResourceNotFoundException(String.format("User by Email: %s does not exist", email));
-        }
-
-        return userMapper.toDto(userEntity);
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(String.format("User by Email: %s does not exist", email)));
+        return userMapper.toDto(user);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<UserDto> findAll() {
-            return userRepository.findAll().stream().map(userMapper::toDto).toList();
+        return userRepository.findAll().stream().map(userMapper::toDto).toList();
     }
 
     private String getClientIP(HttpServletRequest request)  {

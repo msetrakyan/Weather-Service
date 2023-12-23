@@ -107,7 +107,6 @@ public class GeoIpService {
     private String getPublicIpAddress() throws IOException {
         URL url = new URL(amazonGetIpUrl);
         BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-
         return br.readLine().trim();
     }
 
