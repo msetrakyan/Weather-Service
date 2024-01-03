@@ -1,23 +1,21 @@
 package com.weather.weather.config;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
+@RequiredArgsConstructor
 public class ApplicationConfiguration {
 
     @Bean
-    ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
-
-    @Bean
-    RestTemplate restTemplate() {
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+
 
 
 }
